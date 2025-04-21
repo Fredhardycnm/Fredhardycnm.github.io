@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>夕颜韵白 Blog</title>
+    <style>
+        .password-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 320px;
+            z-index: 9999;
+        }
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 12px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .attempts {
+            color: #666;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="password-container">
+        <div class="password-form">
+            <h3>请回答问题</h3>
+            <p>1+1=?</p>
+            <input type="text" id="password-input" autocomplete="off">
+            <button onclick="checkPassword()">确认</button>
+            <p class="attempts" id="attempts-text">还剩 3 次机会</p>
+        </div>
+    </div>
+
+    <script>
+    let attempts = 0;
+    const maxAttempts = 3;
+    const correctAnswer = "2";
+    const targetPage = "diercz.html";
+    const errorPage = "https://fredhardycnm.github.io/";
+
+    function checkPassword() {
+        const input = document.getElementById('password-input');
+        const attemptsText = document.getElementById('attempts-text');
+        const userInput = input.value;
+        
+        if (!userInput) {
+            return;
+        }
+
+        if (userInput === correctAnswer) {
+            alert('答案正确，正在跳转...');
+            window.location.href = targetPage;
+            return;
+        }
+
+        attempts++;
+        const remaining = maxAttempts - attempts;
+        
+        if (remaining > 0) {
+            alert(`答案错误，请重试。`);
+            attemptsText.textContent = `还剩 ${remaining} 次机会`;
+            input.value = '';
+        } else {
+            alert('已超过最大尝试次数，即将跳转到其他页面...');
+            window.location.href = errorPage;
+        }
+    }
+
+    // 添加回车键支持
+    document.getElementById('password-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkPassword();
+        }
+    });
+    </script>
+</body>
+</html>
+    
